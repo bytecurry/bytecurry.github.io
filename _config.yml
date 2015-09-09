@@ -1,0 +1,24 @@
+#Build settings
+
+markdown: kramdown
+highlighter: pygments
+
+# Site settings
+title: Bytecurry
+
+description: >-
+  Software Projects
+
+
+#variables
+links:
+  github: https://github.com/bytecurry
+  colliflower:
+    repo: https://github.com/bytecurry/colliflower
+    docs: /colliflower/overview.html
+
+ga_code: UA-67379507-1
+
+maintainer:
+  url: https://github.com/tmccombs
+  handle: tmccombs
