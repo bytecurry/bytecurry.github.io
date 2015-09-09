@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Liter &ndash; Colliflower
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="liter"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="liter"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="liter"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Colliflower » Liter</h1>
+  <article id="article" data-section="liter">
+    <aside>
+      <ol class="toc"><li><a href="overview.html" data-section="overview">Overview</a><ol><li><a href="overview.html#additional-functionality" data-section="additional-functionality">Additional functionality</a></li></ol></li><li><a href="liter.html" data-section="liter">Liter</a><ol><li><a href="liter.html#basic-functionality" data-section="basic-functionality">Basic Functionality</a></li><li><a href="liter.html#generators" data-section="generators">Generators</a></li><li><a href="liter.html#tools" data-section="tools">Tools</a></li><li><a href="liter.html#iter-object" data-section="iter-object">ITER-OBJECT</a></li><li><a href="liter.html#file-iterator" data-section="file-iterator">File iterator</a></li></ol></li><li><a href="garten.html" data-section="garten">Garten</a><ol><li><a href="growers.html" data-section="growers">Growers</a></li><li><a href="implementations.html" data-section="implementations">Implementations</a><ol><li><a href="list-classes.html" data-section="list-classes">List Classes</a></li></ol></li></ol></li><li><a href="silo.html" data-section="silo">Silo</a><ol><li><a href="protocol.html" data-section="protocol">Protocol</a></li><li><a href="14-implementations.html" data-section="14-implementations">Implementations</a><ol><li><a href="alists-and-plists.html" data-section="alists-and-plists">alists and plists</a></li></ol></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p>
+Liter is a collection of tools to work with basic iterators.</p><p>An iterator in Liter is just a function (usually a closure) which returns
+the next value in the iterable, and signals a ITERATION-ENDED condition
+if there are no more values. It should follow the following rules:</p><ul><li>An iterator MAY be called with optional, keyword, or rest arguments, but MUST function
+correctly if called with no arguments.</li><li>If an iterator has completed, it SHOULD signal an ITERATION-ENDED condition, typically using
+END-ITERATION.</li><li>Once an iterator signals an ITERATION-ENDED condition, it SHOULD signal an ITERATION-ENDED
+condition on each future call, unless something changes the state of the iterator so that it
+can continue iterating.</li><li>Client code SHOULD handle any ITERATION-ENDED condition, or use a function or macro that does
+(such as the iterate drivers, DO-ITERATOR, etc).</li><li>Additional return values may be ignored by the caller of an iterator.</li><li>By convention, key-value pairs SHOULD be represented as a cons pair. (as in alists)</li><li>An iterator MAY be infinite, but not all liter functions can be safely used with such
+iterators. Functions such as ITAKE can be used to convert an infinite iterator to a finite one.</li></ul><p></p><p>An iterable is any object for which there is a method defined for GET-ITERATOR.
+Most liter function accept an iterable, and will get an iterator using GET-ITERATOR.
+There is a GET-ITERATOR method defined for iterators that is equivalent to the identity
+function, so iterators can be passed to these functions.</p><h1 id="basic-functionality">Basic Functionality</h1><p><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">(iterable)</code><div class="codex-docstring">Get an iterator for some iterable object. Implementations are provided
+for builtin iterable types.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">end-iteration</code><code class="codex-lambda-list">nil</code><div class="codex-docstring">Convenience function to return values for an iterator that has reached the end.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">inext</code><code class="codex-lambda-list">(iterator &amp;rest args)</code><div class="codex-docstring"><p>Return the next value of an iterator and whether or not an actual value was
+retrieved as values.</p><p>Any additional arguments are passed through to the iterator function.</p></div></div><div class="codex-doc-node codex-record codex-condition"><code class="codex-name">iteration-ended</code><div class="codex-docstring">Condition signaled when an iterator has reached the end.</div><ul class="codex-slot-list"></ul></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((f function))</code><div class="codex-docstring">The iterator for a function is just the function</div></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((l list))</code><div class="codex-docstring">Iterator for the items of a list, or pairs of an alist.</div></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((s vector))</code><div class="codex-docstring">Iterate over the items of a vector respecting the fill-counter if extant.</div></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((a array))</code><div class="codex-docstring">Iterate over elements of array in row-major order.</div></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((h hash-table))</code><div class="codex-docstring"><p>Iterate over elements of a hash-table. Returns a cons of the key and value.</p><p>Since a clousre over a the form from a HASH-TABLE-ITERATOR is undefiend, at the time
+of creation a list of keys is created and the iterator closes over that.</p><p>If you know of a better way of doing this, please let me know.</p></div></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">get-iterator</code><code class="codex-lambda-list">((s stream))</code><div class="codex-docstring">Iterate over the elements of a stream. I.e. the characters of a character
+stream or the bytes of a byte stream.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-hash-key-iterator</code><code class="codex-lambda-list">(h)</code><div class="codex-docstring">Get an iterator over the keys of H.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-hash-value-iterator</code><code class="codex-lambda-list">(h)</code><div class="codex-docstring">Get an iterator over the values of H.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-character-stream-iterator</code><code class="codex-lambda-list">(stream)</code><div class="codex-docstring">Get an iterator for a character input stream</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-byte-stream-iterator</code><code class="codex-lambda-list">(stream)</code><div class="codex-docstring">Get an iterator for a binary input stream.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-line-iterator</code><code class="codex-lambda-list">(stream)</code><div class="codex-docstring">Get an iterator that iterates over lines in a character stream.</div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">do-iterator</code><code class="codex-lambda-list">((var iterator &amp;optional return) &amp;body body)</code><div class="codex-docstring">A DO macro in the style of dolist that executes body for each
+item in ITERATOR.</div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">do-iterable</code><code class="codex-lambda-list">((var iterable &amp;optional return) &amp;body body)</code><div class="codex-docstring">Loop over all items in the iterable ITERABLE, in a manner similar to dolist.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterator-list</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Create a list from an iterator. Note that this will only work
+if the iterator terminates.</div></div></p><p>Liter also provides two <a href="https://common-lisp.net/project/iterate/">iterate</a> drivers:</p><dl><dt><code>FOR var IN-ITERATOR it</code></dt><dd>Iterates through the items in an iterator <code>it</code></dd><dt><code>FOR var IN-ITERABLE it</code></dt><dd>A more generic driver clause that will iterate over anything with <code>get-iterator</code> defined on it.</dd></dl><h1 id="generators">Generators</h1>
+The Following API is provided by the <code>liter/generate</code> package (inluded in the <code>liter</code>
+package). These functions can be used to create iterators that abstract some sort of sequence.<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">icounter</code><code class="codex-lambda-list">(&amp;key (from 0) (by 1) (to 0 stop-p))</code><div class="codex-docstring"><p>Create an iterator that just counts up from FROM by amount BY forever.
+The returned iterator takes an optional argument which resets the counter if true.</p><p>If a TO parameter is provided, then the counter will stop when the value returned would equal
+the TO parameter. Note that if using a BY parameter it is possible to step over the TO
+end-point, but a &gt;= comparison is undesirable because it wouldn't work for a negative step.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">irepeat</code><code class="codex-lambda-list">(v &amp;optional (n -1))</code><div class="codex-docstring"><p>Create an iterator that returns the value V N times.
+If N is negative (the default) iterate forever.</p><p>Note that CONSTANTLY is equivalent to IREPEAT with a negative N,
+and in fact there is a compiler macro that compiles IREPEAT as CONSTANTLY
+in that case.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">singleton-iterator</code><code class="codex-lambda-list">(element)</code><div class="codex-docstring"><p>Create an iterator that returns element on the first iteration, and
+ends on the second.</p><p>Equivalent to `(irepeat element 1)`.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">icycle</code><code class="codex-lambda-list">(iterable)</code><div class="codex-docstring">Create an iterator that iterates through ITERABLE, and then cycles through
+the values again.
+This stores the results of iterating over ITERABLE.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">icycle*</code><code class="codex-lambda-list">(&amp;rest args)</code><div class="codex-docstring">Create an iterator that cycles through the arguments passed to it.</div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">make-iterator</code><code class="codex-lambda-list">(&amp;body body)</code><div class="codex-docstring"><p>Create an iterator that executes BODY each time.</p><p>Basically a simple wrapper for LAMBDA.
+Iteration can be ended by calling END-ITERATION.</p></div></div><div class="codex-error codex-no-node">No node with name <code>make-state-iterator</code>.</div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">make-state-iterator*</code><code class="codex-lambda-list">(initial-state (&amp;rest lambda-list) &amp;body body)</code><div class="codex-docstring">Macro form of MAKE-STATE-ITERATOR. Note that in this form INITIAL-STATE is required.</div></div><h1 id="tools">Tools</h1>
+The following API provides additional tools to perform operations on iterators and iterables.<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">itransform</code><code class="codex-lambda-list">(iterable map-fun)</code><div class="codex-docstring"><p>Return an iterator that iterates over transformed values of an iterable.</p><p>ITERABLE is on object for which GET-ITERATOR is defined.
+MAP-FUN is a function which is called with each value returned by the iterator
+and returns the value that the new iterator should return.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">ifilter</code><code class="codex-lambda-list">(iterable predicate)</code><div class="codex-docstring">Return a new iterator that iterates over the values of ITERABLE for which
+PREDICATE is true.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">ifold</code><code class="codex-lambda-list">(iterable op &amp;optional initial)</code><div class="codex-docstring">Fold over an iterable.
+ITERABLE is the iterable to fold over.
+OP is a binary operation that takes the accumulated result, and an iterated item
+and returns a new accumulated result.
+INITIAL is the initial accumulated state.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iaccumulate</code><code class="codex-lambda-list">(iterable &amp;optional (op (quote +)))</code><div class="codex-docstring"><p>Return an iterator that accumulates the results of appling OP to the previous
+result and the current item.</p><p>IACCUMULATE is like IFOLD that keeps track of intermediary results.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">ichain</code><code class="codex-lambda-list">(first &amp;rest rest)</code><div class="codex-docstring">Return a new iterator that iterates through each of the
+iterables passed to it in series.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">izip</code><code class="codex-lambda-list">(&amp;rest iterables)</code><div class="codex-docstring"><p>Zip iterables together.</p><p>This returns an iterator that returns a list of the results of getting the next value from each iterable.
+The iterator ends when the shortest of the iterables ends.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">izip-longest</code><code class="codex-lambda-list">(missing-value &amp;rest iterables)</code><div class="codex-docstring">Like IZIP but stops on the longest iterable.
+When a shorter iterable ends, it will continually return MISSING-VALUE until
+the whole iterator ends.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">izip-with-index</code><code class="codex-lambda-list">(iterable)</code><div class="codex-docstring"><p>Zip an iterable with an index.</p><p>Each element of the new iterator is a list of the index (starting with 0) and
+the next element of ITERABLE.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">itee</code><code class="codex-lambda-list">(iterable &amp;optional (n 2))</code><div class="codex-docstring">Split a single iterable into N iterators.
+The iterators are returned as values.
+Note that ITEE depends on the iterator of iterable signaling an END-ITERATION
+if the iterator has ended, even if an END-ITERATION has already been signaled.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">itake</code><code class="codex-lambda-list">(iterable n)</code><div class="codex-docstring">Take the first N elements of iterable.
+Returns an iterator.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">itake-while</code><code class="codex-lambda-list">(iterable pred)</code><div class="codex-docstring">Return an iterator that returns elements from ITERABLE as long as PRED returns
+true when passed the value. Not that this will consume the first item where PRED
+returns nil and not return it.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">idrop</code><code class="codex-lambda-list">(iterable n)</code><div class="codex-docstring">Return an iterator over the elements of iterable after
+dropping the first n.</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">idrop-while</code><code class="codex-lambda-list">(iterable pred)</code><div class="codex-docstring">Return an iterator over the elements of iterable that
+drops the initial elements while PRED returns false for them.
+This is the inverse of ITAKE-WHILE.</div></div><h1 id="iter-object">ITER-OBJECT</h1><div class="codex-doc-node codex-record codex-class"><code class="codex-name">iter-object</code><div class="codex-docstring"><p>A class to represent an iterator object.</p><p>If closer-mop is enabled, it is a funcallable object that calls ITER-OBJECT-NEXT when called.
+Otherwise GET-ITERATOR returns a function that calls ITER-OBJECT-NEXT.</p><p>Subclasses should use a metaclass of FUNCALLABLE-STANDARD-CLASS if mop is available.</p></div><ul class="codex-slot-list"></ul></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">iter-object-next</code><code class="codex-lambda-list">(iter-object &amp;rest args)</code><div class="codex-docstring">Get the next object in the iter-object iterator.</div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">iter-object-prev</code><code class="codex-lambda-list">(iter-object &amp;rest args)</code><div class="codex-docstring"><p>Get the previous object in the iter-object iterator.</p><p>This is optional for iter-object implementations.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">iter-object-end-p</code><code class="codex-lambda-list">(iter-ojbect)</code><div class="codex-docstring">Predicate to test if the iterator has ended.</div></div><h1 id="file-iterator">File iterator</h1><div class="codex-doc-node codex-record codex-class"><code class="codex-name">file-iterator</code><div class="codex-docstring">An iterator object that represents the iteration state of
+iterating over a file stream.</div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">stream</code><div class="codex-docstring">The stream that the file-iterator is backed by.</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">by-line</code><div class="codex-docstring">Whether or not we are reading by lines. Only applies
+to character streams.</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">read-fun</code><div class="codex-docstring">The function to use to read from the stream.</div></li></ul></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">make-file-iterator</code><code class="codex-lambda-list">(filename &amp;key by-line (element-type (quote character)) (if-does-not-exist error) (external-format default))</code><div class="codex-docstring"><p>Create a FILE-ITERATOR using the same arguments as OPEN. In fact this is basically like OPEN, but
+returns a FILE-ITERATOR instead of a stream.</p><p>If BY-LINE is true, and the ELEMENT-TYPE is a subtype of CHARACTER, then the iterator will return
+whole lines at a time instead of individual characters.</p></div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">with-file-iterator</code><code class="codex-lambda-list">((var filename &amp;key by-line (element-type (quote (quote character))) (if-does-not-exist error) (external-format default)) &amp;body body)</code><div class="codex-docstring">Macro similar to WITH-OPEN-FILE, but VAR is bound to a file iterator instead of a STREAM.</div></div>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>

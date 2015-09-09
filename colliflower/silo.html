@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Silo &ndash; Colliflower
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="silo"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="silo"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="silo"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Colliflower » Silo</h1>
+  <article id="article" data-section="silo">
+    <aside>
+      <ol class="toc"><li><a href="overview.html" data-section="overview">Overview</a><ol><li><a href="overview.html#additional-functionality" data-section="additional-functionality">Additional functionality</a></li></ol></li><li><a href="liter.html" data-section="liter">Liter</a><ol><li><a href="liter.html#basic-functionality" data-section="basic-functionality">Basic Functionality</a></li><li><a href="liter.html#generators" data-section="generators">Generators</a></li><li><a href="liter.html#tools" data-section="tools">Tools</a></li><li><a href="liter.html#iter-object" data-section="iter-object">ITER-OBJECT</a></li><li><a href="liter.html#file-iterator" data-section="file-iterator">File iterator</a></li></ol></li><li><a href="garten.html" data-section="garten">Garten</a><ol><li><a href="garten.html#growers" data-section="growers">Growers</a></li><li><a href="garten.html#implementations" data-section="implementations">Implementations</a><ol><li><a href="garten.html#list-classes" data-section="list-classes">List Classes</a></li></ol></li></ol></li><li><a href="silo.html" data-section="silo">Silo</a><ol><li><a href="silo.html#protocol" data-section="protocol">Protocol</a></li><li><a href="silo.html#14-implementations" data-section="14-implementations">Implementations</a><ol><li><a href="silo.html#alists-and-plists" data-section="alists-and-plists">alists and plists</a></li></ol></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p></p><p>Silo is a library that makes accessing values by keys more generic.</p><h1 id="protocol">Protocol</h1><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">sget</code><code class="codex-lambda-list">(object key &amp;key)</code><div class="codex-docstring"><p>Generic get function. Provides a uniform way to
+access properties of an object. The s stands for super, simple, or standard.</p><p>It is setfable as long as <code>(setf sget)</code> is defined as well, which it should be
+for mutable objects.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">supdate</code><code class="codex-lambda-list">(object key value &amp;key)</code><div class="codex-docstring"><p>Generic update function. Unlike (SETF SGET) it may or may not mutate
+OBJECT. Data structures should define one or both of (SETF SGET) and SUPDATE.</p><p>SUPDATE MUST return the updated object.</p><p>For immutable data structures, SUPDATE can be used to create updated data structures.
+It also works for prepending to lists such as plists or alists.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">sdel</code><code class="codex-lambda-list">(object key &amp;key)</code><div class="codex-docstring"><p>Generic delete function. Companion to sget and sset.</p><p>Like SSET it MUST return the object with changes.</p></div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">ssetf</code><code class="codex-lambda-list">(place key value &amp;rest key-args &amp;environment env)</code><div class="codex-docstring">Modify macro that sets a place equal to the result of SUPDATE.</div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">slocation</code><code class="codex-lambda-list">(place key &amp;rest args &amp;environment env)</code><div class="codex-docstring"><p>SETF expander that uses SUPDATE to compute the new value to store in PLACE.</p><p>PLACE must be a SETFable place, and since this uses SUPDATE, it is safe for operations that
+don't mutate PLACE directly (such as prepending to a list).</p></div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">define-sgetter</code><code class="codex-lambda-list">((&amp;whole lambda-list obj-spec key &amp;rest params) place-expr &amp;key declarations documentation)</code><div class="codex-docstring">Define SGET and (SETF SGET) for a place to use sget with.</div></div><div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">rget</code><code class="codex-lambda-list">(object &amp;rest keys)</code><div class="codex-docstring"><p>Recursive get. Calls sget for each key in turn from left to right.</p><p>As long as (SETF SGET) is defined for the final result, RGET is setfable.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">rget-apply</code><code class="codex-lambda-list">(object &amp;rest keys+)</code><div class="codex-docstring">A combination of RGET and APPLY. It repeatedly calls SGET on
+successive results for each key, and the last argument is a list of keys
+to use.</div></div><h1 id="14-implementations">Implementations</h1><p></p><p>The following types have silo operations defined for them:</p><dl><dt>standard-object</dt><dd>sget and company on a standard object get and set a slot of the object.</dd><dt>hash-table</dt><dd>sget is equivalent to gethash for hash-tables, and sdel is equivalent to remhash.</dd><dt>array</dt><dd>sget is equivalent to aref for arrays (including vectors)</dd><dt>list</dt><dd>Lists are more complicated because there are multiple ways to use keys. By default silo
+assumes you want to access by the index in the list. However, you can also acces them as plists
+or alists, as described belos.
+described below access it as a plist and an alist. In general, if there are multiple ways to
+access a an object with keys, the recommended way is to use multiple dispatch on both the
+object referenced and the key, and create a special object for the key.</dd></dl><h2 id="alists-and-plists">alists and plists</h2><p></p><p>Since alists and plists are just lists with different semantics for the same underlying
+representation we needed a way to specify what type of list a list is. They way we do that
+is with special key objects for plists and alists (the default behavior for a list is to
+use the key as an index into the sequence).</p><p>One important thing to not is that for both plists and alists, while you can call <code>(setf sget)</code>
+in place to update a value already in the mapping, to add a new one you must use <code>supdate</code> or
+its companion <code>(setf slocation)</code>, since the old list won't have a reference to the added key and
+value.</p><p>The special keys to access plists and alists are described below. Using a special object like this
+is the recommended way to deal with objects where there are multiple ways to access a key value.<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">plist-key</code><code class="codex-lambda-list">(key-item)</code><div class="codex-docstring">Create a key to access an item in a plist</div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">alist-key</code><code class="codex-lambda-list">(item &amp;key key (test (quote eql)))</code><div class="codex-docstring">Create a key to access values in alists with sget</div></div></p>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>

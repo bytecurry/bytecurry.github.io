@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Garten &ndash; Colliflower
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="garten"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="garten"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="garten"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Colliflower » Garten</h1>
+  <article id="article" data-section="garten">
+    <aside>
+      <ol class="toc"><li><a href="overview.html" data-section="overview">Overview</a><ol><li><a href="overview.html#additional-functionality" data-section="additional-functionality">Additional functionality</a></li></ol></li><li><a href="liter.html" data-section="liter">Liter</a><ol><li><a href="liter.html#basic-functionality" data-section="basic-functionality">Basic Functionality</a></li><li><a href="liter.html#generators" data-section="generators">Generators</a></li><li><a href="liter.html#tools" data-section="tools">Tools</a></li><li><a href="liter.html#iter-object" data-section="iter-object">ITER-OBJECT</a></li><li><a href="liter.html#file-iterator" data-section="file-iterator">File iterator</a></li></ol></li><li><a href="garten.html" data-section="garten">Garten</a><ol><li><a href="garten.html#growers" data-section="growers">Growers</a></li><li><a href="garten.html#implementations" data-section="implementations">Implementations</a><ol><li><a href="garten.html#list-classes" data-section="list-classes">List Classes</a></li></ol></li></ol></li><li><a href="silo.html" data-section="silo">Silo</a><ol><li><a href="protocol.html" data-section="protocol">Protocol</a></li><li><a href="14-implementations.html" data-section="14-implementations">Implementations</a><ol><li><a href="alists-and-plists.html" data-section="alists-and-plists">alists and plists</a></li></ol></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p></p><p>Garten is a library that provides a generic interface for building collections. It was inspired
+by things like the Growable trait in scala or the StringBuilder class from Java.</p><h1 id="growers">Growers</h1><p></p><p>A <i>grower</i> is an object which can be fed items to grow a data structure, and once all the
+desired items have been added a final result (or <i>fruit</i>) can be obtained.<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">make-grower</code><code class="codex-lambda-list">(type &amp;key)</code><div class="codex-docstring"><p>Make a grower object that can be used to &quot;grow&quot;
+a collection. The returned object must define the FEED method and in most
+cases should define the FRUIT method and RESET-GROWER methods.</p><p>The TYPE argument is an object for which a MAKE-GROWER method is specialized, usually a symbol.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">feed</code><code class="codex-lambda-list">(grower item)</code><div class="codex-docstring">Add an item to the collection. If the collection needs a key-value
+pair, ITEM should be a CONS cell with the key as the CAR and the value as the CDR.</div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">feed-iterable</code><code class="codex-lambda-list">(grower iterable)</code><div class="codex-docstring"><p>Add all items from ITERABLE into GROWER. The default method
+just iterates over iterable and calls FEED with each item.</p><p>The function is generic so that GROWERs can use more efficient methods if desired.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">fruit</code><code class="codex-lambda-list">(grower)</code><div class="codex-docstring"><p>Return the final result of a grower.
+A grower doesn't necessarily need this to be defined if there is another way to access the result,
+but in most cases it should be supplied.</p><p>It is undefined what happens if this is called more than once for the same grower. Or more
+specifically, the behavior depends on the grower implementation.</p></div></div><div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">reset-grower</code><code class="codex-lambda-list">(grower)</code><div class="codex-docstring"><p>Reset a grower to an empty collection.</p><p>This can be used to recycle data structures if the result is no longer used.
+But it is undefined whether it is safe to use the result of FRUIT after RESET-GROWER
+has been called on the grower that generated it.</p><p>It also may not be defined for all growers.</p></div></div><div class="codex-doc-node codex-operator codex-function"><code class="codex-name">feed*</code><code class="codex-lambda-list">(grower &amp;rest items)</code><div class="codex-docstring">Var-arg form of feed. Add multiple items at once.</div></div><div class="codex-doc-node codex-record codex-class"><code class="codex-name">grower</code><div class="codex-docstring"><p>Base class for specialized growers.</p><p>Note that not all grower's will be subclasses of GROWER.</p></div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">grower-state</code><div class="codex-docstring">The state of the grower. By default this is
+what is returned by FRUIT.</div></li></ul></div><div class="codex-doc-node codex-operator codex-method"><code class="codex-name">fruit</code><code class="codex-lambda-list">((grower grower))</code><div class="codex-docstring">Default method for fruit for a GROWER. Just returns GROWER-STATE.</div></div></p><h1 id="implementations">Implementations</h1><p></p><p>Garten provides the following basic built in implementations of the grower interface:</p><table><tr><td><b>type argument</b></td><td><b>result type</b></td><td><b>key args</b></td><td><b>feed argument</b></td><td><b>backing-type</b></td></tr><tr><td>'vector</td><td>vector</td><td>:element-type :size :adjustable</td><td>element</td><td>vector</td></tr><tr><td>'string</td><td>string</td><td>:element-type</td><td>character</td><td>string-stream</td></tr><tr><td>'hash-table</td><td>hash-table</td><td>same as for make-hashtable</td><td>cons cell</td><td>hash-table</td></tr><tr><td>'list</td><td>list</td><td>:prepend</td><td>element</td><td>list-grower or prepend-list-grower</td></tr><tr><td>:plist</td><td>list (plist)</td><td>:default</td><td>cons cell</td><td>plist-grower</td></tr><tr><td>:alist</td><td>list (alist)</td><td></td><td>cons cell</td><td>prepend-list-grower</td></tr></table><p><code>reset-grower</code> is defined for all of the above.</p><p>The keyword arguments for make-grower have the following meanings.
+</p><dl><dt>:element-type</dt><dd>The type of the element stored in the collection. For key-value collections it is the type of the value.</dd><dt>:size</dt><dd>The initial size to allocate for the container. Useful for things like vectors and hash-tables.
+For some data structures it may not be possible to add more items than the amount specified by size.</dd><dt>:adjustable</dt><dd>Whether or not the underlying container's size can be adjustable. Defaults to true.</dd><dt>:prepend</dt><dd>Whether or not elements should be prepended to the front of a sequence rather than the end.
+Defaults to false</dd><dt>:default</dt><dd>For plists, if a non-cons value is supplied, the value is assumed to be a key, and
+default is used as the value. Defaults to nil.</dd></dl><p></p><p>Note that for key-value mapping structures, the key and value must be supplied as a cons cell
+with the key as the CAR and the value as the CDR.</p><p>The <code>feed</code> and <code>feed-iterable</code> functions can also be used for any stream with either
+elements of the streams element-type, or sequences of elements of the streams element-type.
+They can also be used on lists, although they are linear operations, since they use nconc.</p><h2 id="list-classes">List Classes</h2><div class="codex-doc-node codex-record codex-class"><code class="codex-name">list-grower</code><div class="codex-docstring">A grower for a list that allows appending elements in constant time.</div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">grower-state</code><div class="codex-docstring">A queue of items added. This makes insertion at the end
+a constant time operation.</div></li></ul></div><div class="codex-doc-node codex-record codex-class"><code class="codex-name">plist-grower</code><div class="codex-docstring">A grower that creates a plist. Items added should be cons cells
+of the key and value. If an item isn't a cons cell it is treated as a key, with a value
+of DEFAULT-VALUE.</div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">default-value</code><div class="codex-docstring">The default value to store in the plist if the fed item isn't
+a cons cell.</div></li></ul></div><div class="codex-doc-node codex-record codex-class"><code class="codex-name">prepend-list-grower</code><div class="codex-docstring">A List grower that prepends values rather than appending them.</div><ul class="codex-slot-list"></ul></div>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>

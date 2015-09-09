@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Overview &ndash; Colliflower
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="overview"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="overview"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="overview"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Colliflower » Overview</h1>
+  <article id="article" data-section="overview">
+    <aside>
+      <ol class="toc"><li><a href="overview.html" data-section="overview">Overview</a><ol><li><a href="overview.html#additional-functionality" data-section="additional-functionality">Additional functionality</a></li></ol></li><li><a href="liter.html" data-section="liter">Liter</a><ol><li><a href="basic-functionality.html" data-section="basic-functionality">Basic Functionality</a></li><li><a href="generators.html" data-section="generators">Generators</a></li><li><a href="tools.html" data-section="tools">Tools</a></li><li><a href="iter-object.html" data-section="iter-object">ITER-OBJECT</a></li><li><a href="file-iterator.html" data-section="file-iterator">File iterator</a></li></ol></li><li><a href="garten.html" data-section="garten">Garten</a><ol><li><a href="growers.html" data-section="growers">Growers</a></li><li><a href="implementations.html" data-section="implementations">Implementations</a><ol><li><a href="list-classes.html" data-section="list-classes">List Classes</a></li></ol></li></ol></li><li><a href="silo.html" data-section="silo">Silo</a><ol><li><a href="protocol.html" data-section="protocol">Protocol</a></li><li><a href="14-implementations.html" data-section="14-implementations">Implementations</a><ol><li><a href="alists-and-plists.html" data-section="alists-and-plists">alists and plists</a></li></ol></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p></p><p>Colliflower is a collection of libraries for generically working with data structures.</p><h1 id="additional-functionality">Additional functionality</h1>
+In addition to the core in liter, garten, and silo. The Colliflower package provides the
+following functions:<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">grow-from-iterable</code><code class="codex-lambda-list">(iterable type &amp;rest type-args)</code><div class="codex-docstring"><p>Create a growable of type TYPE from an iterable.</p><p>TYPE-ARGS are additional arguments to pass to MAKE-GROWER after the type.</p></div></div>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>
