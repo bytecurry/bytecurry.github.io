@@ -237,7 +237,7 @@ dfn {
  * Addresses styling not present in IE6/7/8/9
  */
 mark {
-  background: #ff0;
+  background: #00e0e0;
   color: #000;
 }
 
@@ -390,7 +390,7 @@ fieldset {
 
 /*
  * 1. Corrects color not being inherited in IE6/7/8/9
- * 2. Corrects text not wrapping in FF3 
+ * 2. Corrects text not wrapping in FF3
  * 3. Corrects alignment displayed oddly in IE6/7
  */
 legend {
@@ -580,12 +580,12 @@ h3 {
 }
 
 a {
-  color: #ffcc00;
+  color: #00e0e0;
   font-weight: 400;
   text-decoration: none;
 }
 a:hover {
-  color: #ffeb9b;
+  color: #009090;
 }
 
 a small {
@@ -616,7 +616,7 @@ section img {
 }
 
 blockquote {
-  border-left: 3px solid #ffcc00;
+  border-left: 3px solid #00e0e0;
   margin: 0;
   padding: 0 0 0 20px;
   font-style: italic;
