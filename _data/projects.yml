@@ -1,0 +1,16 @@
+- name: colliflower
+  description: Generic interfaces for collections
+  repo: https://github.com/bytecurry/colliflower
+  docs: http://bytecurry.github.io/colliflower/overview.html
+- name: bytecurry.hash
+  description: hash-table utilities
+  repo: https://github.com/bytecurry/bytecurry.hash
+- name: bytecurry.asdf-ext
+  description: asdf extensions
+  repo: https://github.com/bytecurry/bytecurry.asdf-ext
+- name: bytecurry.mocks
+  description: lightweight mocking framework
+  repo: https://github.com/bytecurry/bytecurry.mocks
+- name: nonfinite
+  description: Portable infinities and NaN in lisp
+  repo: https://github.com/bytecurry/nonfinite

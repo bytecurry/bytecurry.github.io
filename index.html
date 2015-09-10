@@ -12,4 +12,12 @@ layout: default
 		</span>
 		<span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
     </div>
+	<section>
+		<h1>Projects</h1>
+		{% for project in site.data.projects %}
+		<h3><a href="{{project.repo}}">{{project.name}}</a></h3>
+		{% if project.docs %}<p><em>Documentation:</em> <a href="{{project.docs}}">{{project.docs}}</a></p>{% endif %}
+		<p>{{project.description}}</p>
+		{% endfor %}
+	</section>
 </section>
