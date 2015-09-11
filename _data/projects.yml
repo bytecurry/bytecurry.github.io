@@ -5,6 +5,9 @@
 - name: bytecurry.hash
   description: hash-table utilities
   repo: https://github.com/bytecurry/bytecurry.hash
+- name: bytecurry.types
+  description: common lisp type definitions
+  repo: https://github.com/bytecurry/bytecurry.types
 - name: bytecurry.asdf-ext
   description: asdf extensions
   repo: https://github.com/bytecurry/bytecurry.asdf-ext
