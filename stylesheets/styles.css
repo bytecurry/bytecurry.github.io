@@ -609,6 +609,7 @@ strong {
   margin: 0 auto;
   position: relative;
   padding: 0 20px;
+	top: 100px;
 }
 
 section img {
@@ -786,9 +787,8 @@ dt {
 
 section {
   max-width: 650px;
-  padding: 30px 0px 50px 0px;
+  padding: 15px 0px;
   margin: 20px 0;
-  margin-top: 70px;
 }
 footer {
   border: 0;
