@@ -79,3 +79,42 @@ and request and response objects.
 
 Built on top of ningle it provides some additional functionality, including database
 support with cl-dbi, configuration, modularization, etc.
+
+
+## Data structures and collections
+
+Unfortunately there isn't a single complete collections library for
+common lisp (that I know of). cl-containers and lisp-interface-library both try to be
+comprehensive collection libraries... but neither is complete or well documented, and have some
+weird behavior in some cases (for example an iterator over a mutable map in lisp-interface-library
+destroys the underlying map). Personally, if you want functional types I would recommend Fset, if not,
+I can't make a strong recommendation. With that said here are some libraries:
+
+### [Colliflower](https://github.com/bytecurry/colliflower)
+
+Of course I will recommend my own library: colliflower. It doesn't add any
+additional collections, but it does provide a convenient way to work with collections
+in a uniform way. At some point I may add integrations with other collection libraries.
+
+### [Fset](https://github.com/slburson/fset)
+
+Fset is a library for functional data structures implemented using weight-balanced binary trees.
+It provides maps, sets, bags and sequences.
+
+### [Lisp Interface Library](https://github.com/fare/lisp-interface-library)
+
+A collection library that uses an interesting "interface passing style" where you pass
+along an interface object that describes the semantics of the underlying data representation.
+
+It focuses on immutable data structures, so support of mutable data structures is somewhat lacking.
+
+There is almost no documentation other than a few tests and an article describing the interface
+passing style.
+
+### [cl-containers](https://github.com/gwkkwg/cl-containers)
+
+Another container library. Unlike Fset and lisp-interface-library, it focuses on mutable data structures.
+It uses dynamic classes to create new classes with the desired behaviour, which is kind of cool when it works,
+but causes some weird edge cases.
+
+I would recommend against using this unless you need it.
