@@ -18,6 +18,15 @@ have the problem that need to be maintained for every lisp implementation, which
 
 ## Pathnames and File System
 
+Most lispers would agree that Common Lisp pathnames are overly complex and a pain to use.
+The lisp pathname system is antiquated and a relic of when there were many more ways to represent filenames, but now there are really only two: Unix filenames and Windows filenames (there are probably obscure operating systems that use other filename systems, but they are certainly not
+widely used). Lisp pathnames are overspecified in some ways and underspecified in others. I would
+like pathnames to be simplified. Here is a list of things I would like to see:
+
+- Remove logical pathnames, they are rarely used, and difficult to use portably
+- Remove the pathname host and version, they don't mean anything on modern implementations
+- Provide functions to convert to and from _native_ namestrings and pathnames. Maybe this just means requiring the namestring functions to return the native namestrings. But the fact that in the current standard there is no way to portably get a pathname from a OS filename, or get the OS filename from a pathname is frankly ridiculous.
+
 ## OS Environment
 
 - command line arguments
