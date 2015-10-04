@@ -10,15 +10,7 @@
 		</header>
 		<main class="wrapper">
 			{{ content }}
-			<footer>
-				<hr>
-				<span class="credits left">
-					Project mainted by <a href="{{site.maintainer.url}}">{{site.maintainer.handle}}</a>
-				</span>
-				<span class="credits right">
-					Theme based on Midnight from <a href="https://twitter.com/michigangraham">mattgraham</a>
-				</span>
-			</footer>
+			{% include footer.html %}
 		</main>
 		<!--[if !IE]><script>fixScale(document);</script><![endif]-->
 		{% include ga.html %}
