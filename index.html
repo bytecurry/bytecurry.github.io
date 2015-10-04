@@ -14,4 +14,15 @@ layout: default
 	<h1> Recommended Libraries</h1>
 	See <a href="/recommended-libraries/lisp.html">my recommended library reference</a>.
 </section>
-g
+<section>
+	<h1>Blog</h1>
+	<ul class="blog-posts">
+		{% for post in site.posts %}
+		<li>
+			<a href="{{ post.url}}">{{post.title}}</a>
+			{{post.excerpt}}
+		</li>
+		{% endfor %}
+	</ul>
+	</h1>
+</section>
