@@ -64,12 +64,27 @@ which is a pretty standard encoding).
 
 ## Concurrency
 
-- bordeaux threads
-- semaphores
-- compare-and-swap/atomic operations
-- timers
+Concurrency is a major part of modern applications, but the ANSI lisp says not a word about it.
+However, there is a proposed standard and compatibility library in the form of
+[Bordeaux Threads](https://trac.common-lisp.net/bordeaux-threads/wiki/ApiDocumentation).
+
+In the case of a new lisp standard I would expect the Bordeaux Threads standard to be part of it.
+But Bordeaux Threads is somewhat minimalist, and I would also like it if the following
+concurrency primitives were included:
+
+- Atomic operations and/or compare-and-swap semantics
+- Timers, such as SBCL's make-timer and friends.
+- Semaphores
 
 ## Sockets
+
+In 1994 the internet was only used by a few. Now it is critical for many applications
+(and certainly for web applications). Every implementation I know of has support for sockets.
+Unfortunately, their interfaces for using sockets vary widely. There is also
+[usocket](https://common-lisp.net/project/usocket/) which provides a portability layer.
+
+A new lisp standard should definitely standardize socket usage, and possibly specify
+local domain (unix) sockets as well.
 
 ## User Defined Streams and Sequences
 
@@ -88,3 +103,4 @@ which is a pretty standard encoding).
 - octet type ?
 - unix timestamps
 - octets-to-string and string-to-octets
+- octet buffer streams
