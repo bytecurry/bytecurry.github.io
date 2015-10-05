@@ -16,6 +16,9 @@ either be compatibility layers over implementation specific features, or use FFI
 not standardized. And for some, the change is more fundamental. Also, compatibility libraries
 have the problem that need to be maintained for every lisp implementation, which isn't always feasible, it would be much better if there is a standard that the implementations are responsible for following.
 
+This is by no means a technical proposal for a standard. It is more of a wish-list of what I would
+like to see in a new standard, if it was ever created.
+
 ## Pathnames and File System
 
 Most lispers would agree that Common Lisp pathnames are overly complex and a pain to use.
@@ -29,11 +32,35 @@ like pathnames to be simplified. Here is a list of things I would like to see:
 
 ## OS Environment
 
-- command line arguments
-- environment variables
-- run-command
+Beyond opening files and listing directory contents, ANSI lisp doesn't specify any
+other interaction with the operating system. At a very minimum the following should be
+standardized:
+
+- The ability to read any command line arguments passed to the program
+- A way to read and write environment variables
+- A way to run external commands in the system, and control stdin and stdout. Something similar
+to `popen` in C.
+- A portable function to end the program with an exit code
+
+Additionally, the following would be nice, but not necessary:
+
+- Access to the current user and group id and/or names
+- A function to create a temporary file
+- Functions to change and get the current working directory
 
 ## Unicode
+
+The ANSI standard makes no mentions of Unicode and has very little specification around character
+representation or encoding. I would like the following to be standardized:
+
+- A required external-format of `:utf-8`
+- Require that char-code and code-char _must_ use take and return the Unicode code point.
+- Reader `#\` syntax for numeric character literals, using Unicode code points (for example something like `#\x1234` which expands
+to `(code-char #x1234)`).
+
+Notice that none of these require that the implementation actually support full Unicode range,
+only that for the characters it does support it is Unicode aware (and can encode/decode UTF-8,
+which is a pretty standard encoding).
 
 ## Concurrency
 
@@ -60,3 +87,4 @@ like pathnames to be simplified. Here is a list of things I would like to see:
 
 - octet type ?
 - unix timestamps
+- octets-to-string and string-to-octets
