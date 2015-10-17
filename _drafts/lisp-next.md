@@ -88,6 +88,19 @@ local domain (unix) sockets as well.
 
 ## User Defined Streams and Sequences
 
+In the ANSI Lisp standard there is no mechanism to create user-defined
+streams or sequences. Even before the ANSI standard was standardized there was a
+proposed standard for user defined streams in the form of [Gray Streams](http://www.cliki.net/gray%20streams).
+Allegro proposed an alternative in the form of [Simple Streams](http://franz.com/support/documentation/current/doc/streams.htm).
+
+Personally, I like simple streams better, but gray streams are more widely implemented by implementations, have a
+compatibility library ([trivial-gray-streams](https://github.com/trivial-gray-streams/trivial-gray-streams)), and are
+thus used in libraries. But one or both of those standards should be part of any future lisp standard.
+
+In the case of user defined sequences, the only implementation I know of that provides such a mechanism is SBCL.
+There was also a [talk](http://www.doc.gold.ac.uk/~mas01cr/talks/2007-04-03%20Cambridge/ilc-talk.pdf) given about it.
+I think that user-defined sequences are generally useful and would like to see them standardized (and implemented).
+
 ## Meta Object Protocol
 
 ## FFI
@@ -98,9 +111,17 @@ local domain (unix) sockets as well.
 - symbol alias (multiple names for the same symbol, helps deal with conflicts)
 - hierarchical packages
 
+## Garbage Collection
+
+- weak hash tables
+- finalizers
+- force garbage collection
+- trivial-garbage
+
 ## Misc
 
 - octet type ?
 - unix timestamps
 - octets-to-string and string-to-octets
 - octet buffer streams
+- estensable test/hashing for hast-tables
