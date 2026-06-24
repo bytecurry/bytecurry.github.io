@@ -2,27 +2,23 @@
 layout: default
 ---
 
-<section>
-	<h1>Projects</h1>
-	{% for project in site.data.projects %}
-	<h3><a href="{{project.repo}}">{{project.name}}</a></h3>
-	{% if project.docs %}<p><em>Documentation:</em> <a href="{{project.docs}}">{{project.docs}}</a></p>{% endif %}
-	<p>{{project.description}}</p>
-	{% endfor %}
-</section>
-<section>
-	<h1> Recommended Libraries</h1>
-	See <a href="/recommended-libraries/lisp.html">my recommended library reference</a>.
-</section>
-<section>
-	<h1>Blog</h1>
-	<ul class="blog-posts">
-		{% for post in site.posts %}
-		<li>
-			<a href="{{ post.url}}">{{post.title}}</a>
-			{{post.excerpt}}
-		</li>
-		{% endfor %}
-	</ul>
-	</h1>
-</section>
+<h1>Projects</h1>
+{% for project in site.data.projects %}
+<h3><a href="{{project.repo}}">{{project.name}}</a></h3>
+{% if project.docs %}<p><em>Documentation:</em> <a href="{{project.docs}}">{{project.docs}}</a></p>{% endif %}
+<p>{{project.description}}</p>
+{% endfor %}
+<h1> Recommended Libraries</h1>
+See <a href="/recommended-libraries/lisp.html">my recommended library reference</a>.
+<!-- Uncomment if I ever decide to add the blog back
+<h1>Blog</h1>
+<ul class="blog-posts">
+  {% for post in site.posts %}
+  <li>
+    <a href="{{ post.url}}">{{post.title}}</a>
+    {{post.excerpt}}
+  </li>
+  {% endfor %}
+</ul>
+</h1>
+-->

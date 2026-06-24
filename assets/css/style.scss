@@ -1,0 +1,12 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+a {
+  color: #00e0e0;
+
+  &:hover {
+    color: #009090;
+  }
+}

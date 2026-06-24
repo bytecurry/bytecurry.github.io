@@ -1,14 +1,12 @@
-#Build settings
-
-markdown: kramdown
-highlighter: rouge
-
 # Site settings
 title: Bytecurry
 
 description: >-
   Software Projects
 
+theme: jekyll-theme-midnight
+
+markdown: kramdown
 
 #variables
 links:
@@ -16,8 +14,6 @@ links:
   colliflower:
     repo: https://github.com/bytecurry/colliflower
     docs: /colliflower/overview.html
-
-ga_code: UA-67379507-1
 
 maintainer:
   url: https://github.com/tmccombs
